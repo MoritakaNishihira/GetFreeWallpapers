@@ -25,9 +25,10 @@ Unsplash APIを使用した無料壁紙自動収集ツール
 
 ```
 GetFreeWallpapers/
-├── get_free_wallpapers.py      # メインスクリプト
-├── get_free_wallpapers.bat     # Windows実行用
-├── edit_themes.bat            # 設定編集用
+├── src
+|    └──main.py                # メインスクリプト
+├── GetFreeWallpapers.bat      # Windows実行用
+├── themes.json                # 設定編集用
 └── README.md                  # このファイル
 ```
 
@@ -40,7 +41,7 @@ GetFreeWallpapers/
 
 ### 3. API キーの設定
 
-`get_free_wallpapers.py`を開き、以下の行を編集：
+`GetFreeWallpapers.py`を開き、以下の行を編集：
 
 ```python
 API_KEY = "YOUR_API_KEY_HERE"  # ← ここに取得したAccess Keyを貼り付け
@@ -49,7 +50,7 @@ API_KEY = "YOUR_API_KEY_HERE"  # ← ここに取得したAccess Keyを貼り付
 ### 4. 必要なライブラリのインストール
 
 **自動インストール（推奨）：**
-- `get_free_wallpapers.bat`を実行すると自動でインストールされます
+- `GetFreeWallpapers.bat`を実行すると自動でインストールされます
 
 **手動インストール：**
 ```bash
@@ -60,14 +61,14 @@ pip install requests
 
 ### Windows（簡単）
 
-1. **初回実行：** `get_free_wallpapers.bat`をダブルクリック
-2. **設定編集：** `edit_themes.bat`をダブルクリック
-3. **壁紙収集：** `get_free_wallpapers.bat`をダブルクリック
+1. **初回実行：** `GetFreeWallpapers.bat`をダブルクリック
+2. **設定編集：** `themes.json`を直接編集
+3. **壁紙収集：** `GetFreeWallpapers.bat`をダブルクリック
 
 ### コマンドライン
 
 ```bash
-python get_free_wallpapers.py
+python src/GetFreeWallpapers.py
 ```
 
 ## ⚙️ 設定ファイル（themes.json）

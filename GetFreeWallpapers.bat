@@ -36,7 +36,7 @@ if errorlevel 1 (
 )
 
 REM GetFreeWallpapersスクリプトの存在確認
-if not exist "main.py" (
+if not exist "src/main.py" (
     echo ❌ main.py が見つかりません
     echo 💡 同じフォルダにPythonスクリプトを配置してください
     echo.
@@ -67,7 +67,7 @@ echo 🚀 GetFreeWallpapers を実行します...
 echo.
 
 REM Pythonスクリプトを実行
-python main.py
+python src/main.py
 
 REM 実行結果の確認
 if errorlevel 1 (
