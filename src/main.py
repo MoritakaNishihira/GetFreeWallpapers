@@ -34,10 +34,16 @@ class GetFreeWallpapers:
         downloads_folder = Path.home() / "Downloads"
         self.download_dir = downloads_folder / "gfp"
         
-        # ダウンロードディレクトリを作成
+        # srcフォルダと同じ階層にdownloaded_jsonフォルダを作成
+        current_dir = Path(__file__).parent  # src フォルダのパス
+        project_root = current_dir.parent    # プロジェクトルートのパス
+        self.json_dir = project_root / "downloaded_json"
+        
+        # ダウンロードディレクトリとJSONディレクトリを作成
         self.download_dir.mkdir(parents=True, exist_ok=True)
+        self.json_dir.mkdir(parents=True, exist_ok=True)
     
-    def search_wallpapers(self, theme, count=10, resolution="regular", orientation="landscape"):
+    def search_wallpapers(self, theme, count=10, resolution="full", orientation="landscape"):
         """
         テーマに基づいて壁紙を検索
         
@@ -48,12 +54,12 @@ class GetFreeWallpapers:
             orientation (str): 向き ("landscape", "portrait", "squarish")
             
         Returns:
-            list: 画像データのリスト
+            list: 画像データのリスト（フルHD以上の横長画像のみ）
         """
         url = f"{self.base_url}/search/photos"
         params = {
             "query": theme,
-            "per_page": min(count, 30),  # 最大30枚まで
+            "per_page": min(count * 3, 30),  # フィルタリングを考慮して多めに取得
             "orientation": orientation,
             "order_by": "relevant"
         }
@@ -64,13 +70,27 @@ class GetFreeWallpapers:
             response.raise_for_status()
             
             data = response.json()
-            photos = data.get("results", [])
+            all_photos = data.get("results", [])
             
-            print(f"✅ {len(photos)}枚の画像が見つかりました")
-            return photos
+            # フルHD以上の横長画像のみをフィルタリング
+            filtered_photos = []
+            for photo in all_photos:
+                width = photo.get("width", 0)
+                height = photo.get("height", 0)
+                
+                # フルHD以上 (1920x1080) かつ横長 (アスペクト比 > 1.2) の画像のみ
+                if width >= 1920 and height >= 1080 and (width / height) > 1.2:
+                    filtered_photos.append(photo)
+                    if len(filtered_photos) >= count:
+                        break
+            
+            print(f"✅ {len(filtered_photos)}枚のフルHD以上横長画像が見つかりました")
+            return filtered_photos
             
         except requests.exceptions.RequestException as e:
             print(f"❌ 検索エラー: {e}")
+            return []
+    
     def load_themes_config(self, config_file="themes.json"):
         """
         テーマ設定ファイルを読み込み
@@ -91,7 +111,7 @@ class GetFreeWallpapers:
             default_config = {
                 "settings": {
                     "count_per_theme": 5,
-                    "resolution": "regular",
+                    "resolution": "full",
                     "orientation": "landscape"
                 },
                 "themes": [
@@ -133,7 +153,51 @@ class GetFreeWallpapers:
             print(f"❌ 設定ファイルの形式が正しくありません: {e}")
             return None
     
-    def download_image(self, photo, resolution="regular"):
+    def is_already_downloaded(self, photo):
+        """
+        画像が既にダウンロード済みかを判定（downloaded_jsonフォルダ内のメタデータを確認）
+        
+        Args:
+            photo (dict): Unsplash APIから取得した画像データ
+            
+        Returns:
+            tuple: (bool, str) - (既にダウンロード済みか, 既存ファイルパス)
+        """
+        photo_id = photo["id"]
+        
+        # downloaded_jsonフォルダ内の既存メタデータファイルをチェック
+        if not self.json_dir.exists():
+            return False, None
+            
+        for json_file in self.json_dir.glob("*_metadata.json"):
+            try:
+                with open(json_file, 'r', encoding='utf-8') as f:
+                    existing_metadata = json.load(f)
+                
+                # 画像IDが一致する場合
+                if existing_metadata.get("id") == photo_id:
+                    # 対応する画像ファイルが存在するかチェック
+                    image_filename = existing_metadata.get("image_file")
+                    if image_filename:
+                        image_path = self.download_dir / image_filename
+                        if image_path.exists():
+                            return True, str(image_path)
+                        else:
+                            # メタデータはあるが画像ファイルがない場合は古いJSONを削除
+                            json_file.unlink()
+                            print(f"🗑️  古いメタデータファイルを削除: {json_file.name}")
+                            
+            except (json.JSONDecodeError, OSError) as e:
+                # 破損したJSONファイルは削除
+                try:
+                    json_file.unlink()
+                    print(f"🗑️  破損したメタデータファイルを削除: {json_file.name}")
+                except:
+                    pass
+        
+        return False, None
+    
+    def download_image(self, photo, resolution="full"):
         """
         画像をダウンロード
         
@@ -145,6 +209,12 @@ class GetFreeWallpapers:
             str: ダウンロードしたファイルパス（失敗時はNone）
         """
         try:
+            # 既にダウンロード済みかチェック
+            is_downloaded, existing_path = self.is_already_downloaded(photo)
+            if is_downloaded:
+                print(f"⏭️  既存: {os.path.basename(existing_path)} (ID: {photo['id']})")
+                return existing_path
+            
             # 画像URLを取得
             image_url = photo["urls"].get(resolution)
             if not image_url:
@@ -163,15 +233,10 @@ class GetFreeWallpapers:
             filename = f"{photo_id}_{photographer}_{description}{ext}"
             # ファイル名から不正な文字を除去
             filename = "".join(c for c in filename if c.isalnum() or c in ".-_")
-            filepath = os.path.join(self.download_dir, filename)
-            
-            # 既にダウンロード済みかチェック
-            if os.path.exists(filepath):
-                print(f"⏭️  既存: {filename}")
-                return filepath
+            filepath = self.download_dir / filename
             
             # 画像をダウンロード
-            print(f"⬇️  ダウンロード中: {filename}")
+            print(f"⬇️  ダウンロード中: {filename} ({photo.get('width', '?')}x{photo.get('height', '?')})")
             img_response = requests.get(image_url)
             img_response.raise_for_status()
             
@@ -179,11 +244,11 @@ class GetFreeWallpapers:
             with open(filepath, 'wb') as f:
                 f.write(img_response.content)
             
-            # メタデータを保存
-            self.save_metadata(photo, filepath)
+            # メタデータを保存（JSONフォルダに）
+            self.save_metadata(photo, str(filepath))
             
             print(f"✅ 完了: {filename}")
-            return filepath
+            return str(filepath)
             
         except Exception as e:
             print(f"❌ ダウンロードエラー: {e}")
@@ -191,7 +256,7 @@ class GetFreeWallpapers:
     
     def save_metadata(self, photo, filepath):
         """
-        画像のメタデータをJSONファイルに保存
+        画像のメタデータをdownloaded_jsonフォルダ内のJSONファイルに保存
         """
         metadata = {
             "id": photo["id"],
@@ -201,10 +266,18 @@ class GetFreeWallpapers:
             "unsplash_url": photo["links"]["html"],
             "download_date": datetime.now().isoformat(),
             "license": "Unsplash License",
-            "tags": [tag["title"] for tag in photo.get("tags", [])]
+            "tags": [tag["title"] for tag in photo.get("tags", [])],
+            "dimensions": {
+                "width": photo.get("width"),
+                "height": photo.get("height")
+            },
+            "image_file": os.path.basename(filepath)
         }
         
-        metadata_path = filepath.replace(".jpg", "_metadata.json")
+        # JSONファイルはdownloaded_jsonフォルダに保存
+        json_filename = os.path.basename(filepath).replace(".jpg", "_metadata.json")
+        metadata_path = self.json_dir / json_filename
+        
         with open(metadata_path, 'w', encoding='utf-8') as f:
             json.dump(metadata, f, ensure_ascii=False, indent=2)
     
@@ -231,12 +304,13 @@ class GetFreeWallpapers:
         
         total_downloaded = 0
         count_per_theme = settings.get("count_per_theme", 5)
-        resolution = settings.get("resolution", "regular")
+        resolution = settings.get("resolution", "full")
         
         print(f"🚀 GetFreeWallpapers - 壁紙収集を開始します")
         print(f"📝 有効なテーマ数: {len(enabled_themes)}")
-        print(f"📊 各テーマ {count_per_theme}枚ずつ取得")
+        print(f"📊 各テーマ {count_per_theme}枚ずつ取得（フルHD以上の横長画像のみ）")
         print(f"💾 保存先: {self.download_dir}")
+        print(f"📄 メタデータ保存先: {self.json_dir}")
         print("-" * 50)
         
         for theme_config in enabled_themes:
@@ -260,19 +334,29 @@ class GetFreeWallpapers:
                 continue
             
             theme_downloaded = 0
+            theme_skipped = 0
             for photo in photos:
-                if self.download_image(photo, resolution):
-                    theme_downloaded += 1
-                    total_downloaded += 1
+                result = self.download_image(photo, resolution)
+                if result:
+                    # 既存ファイルかどうかで処理を分ける
+                    if "既存" in str(result) or self.is_already_downloaded(photo)[0]:
+                        theme_skipped += 1
+                    else:
+                        theme_downloaded += 1
+                        total_downloaded += 1
                 
                 # API制限を考慮して少し待機
                 time.sleep(0.5)
             
-            print(f"📁 {theme_name}: {theme_downloaded}枚ダウンロード完了")
+            if theme_skipped > 0:
+                print(f"📁 {theme_name}: 新規{theme_downloaded}枚、既存{theme_skipped}枚")
+            else:
+                print(f"📁 {theme_name}: {theme_downloaded}枚ダウンロード完了")
             print("-" * 30)
         
-        print(f"🎉 収集完了！合計 {total_downloaded}枚の壁紙をダウンロードしました")
-        print(f"📂 保存場所: {self.download_dir}")
+        print(f"🎉 収集完了！合計 {total_downloaded}枚のフルHD以上壁紙をダウンロードしました")
+        print(f"📂 画像保存場所: {self.download_dir}")
+        print(f"📄 メタデータ保存場所: {self.json_dir}")
     
     def collect_wallpapers(self, themes, count_per_theme=10, resolution="regular"):
         """

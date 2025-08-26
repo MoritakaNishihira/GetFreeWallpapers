@@ -1,19 +1,34 @@
 {
   "settings": {
-    "count_per_theme": 5,
+    "count_per_theme": 20,
     "resolution": "regular",
     "orientation": "landscape"
   },
   "themes": [
     {
-      "name": "自然風景",
-      "query": "nature landscape",
-      "enabled": true
+      "name": "沖縄",
+      "query": "okinawa",
+      "enabled": false
     },
     {
-      "name": "ミニマルデザイン", 
-      "query": "minimal abstract",
+      "name": "海",
+      "query": "sea",
+      "enabled": false
+    },
+    {
+      "name": "山",
+      "query": "mountain",
+      "enabled": false
+    },
+    {
+      "name": "宇宙",
+      "query": "galaxy",
+      "enabled": false
+    },
+    {
+      "name": "地球",
+      "query": "earth",
       "enabled": true
     }
-  ]
+   ]
 }
