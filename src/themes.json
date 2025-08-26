@@ -1,0 +1,19 @@
+{
+  "settings": {
+    "count_per_theme": 5,
+    "resolution": "regular",
+    "orientation": "landscape"
+  },
+  "themes": [
+    {
+      "name": "自然風景",
+      "query": "nature landscape",
+      "enabled": true
+    },
+    {
+      "name": "ミニマルデザイン", 
+      "query": "minimal abstract",
+      "enabled": true
+    }
+  ]
+}
