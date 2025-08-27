@@ -45,25 +45,27 @@ if not exist "src/main.py" (
 )
 
 REM APIキーの設定確認
-findstr /C:"YOUR_API_KEY_HERE" main.py >nul
+findstr /C:"YOUR_API_KEY_HERE" src/main.py >nul
 if not errorlevel 1 (
     echo ❌ APIキーが設定されていません
     echo.
     echo 📝 設定方法:
     echo 1. https://unsplash.com/developers にアクセス
     echo 2. アプリケーションを作成してAccess Keyを取得
-    echo 3. get_free_wallpapers.py のAPI_KEYを実際のキーに置き換え
+    echo 3. src/main.py のAPI_KEYを実際のキーに置き換え
     echo.
     pause
     exit /b 1
 )
 
-REM themes.jsonの存在確認
-if not exist "themes.json" (
-    echo 📝 初回実行: themes.json が作成されます
+REM ToolSettings.jsonの存在確認
+if not exist "ToolSettings.json" (
+    echo 📝 初回実行: ToolSettings.json が作成されます
 )
 
 echo 🚀 GetFreeWallpapers を実行します...
+echo ℹ️  既存画像はスキップして、設定枚数分を確実にダウンロードします
+echo 🗄️  メタデータはSQLiteデータベースで管理されます
 echo.
 
 REM Pythonスクリプトを実行
@@ -78,6 +80,8 @@ if errorlevel 1 (
     echo.
     echo ✅ 実行完了しました
     echo 📂 ダウンロードフォルダの 'gfp' フォルダをご確認ください
+    echo 🗄️  メタデータは 'wallpapers.db' データベースに保存されています
+    echo 💡 'python src/db_manager.py stats' でデータベース統計を確認できます
 )
 
 echo.
