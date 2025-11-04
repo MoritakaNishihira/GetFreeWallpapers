@@ -1,0 +1,293 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "🚀 壁紙収集実行",
+      "type": "shell",
+      "command": "python",
+      "args": ["src/main.py"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONIOENCODING": "utf-8"
+        }
+      },
+      "problemMatcher": [],
+      "detail": "GetFreeWallpapers メインスクリプトを実行"
+    },
+    {
+      "label": "📊 データベース統計表示",
+      "type": "shell",
+      "command": "python",
+      "args": ["src/db_manager.py", "stats"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONIOENCODING": "utf-8"
+        }
+      },
+      "problemMatcher": [],
+      "detail": "データベースの統計情報を表示"
+    },
+    {
+      "label": "📋 壁紙一覧表示",
+      "type": "shell",
+      "command": "python",
+      "args": ["src/db_manager.py", "list", "50"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONIOENCODING": "utf-8"
+        }
+      },
+      "problemMatcher": [],
+      "detail": "登録されている壁紙の一覧を表示（最新50件）"
+    },
+    {
+      "label": "🗄️ データベースバックアップ",
+      "type": "shell",
+      "command": "python",
+      "args": ["src/db_manager.py", "backup"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONIOENCODING": "utf-8"
+        }
+      },
+      "problemMatcher": [],
+      "detail": "データベースをバックアップ"
+    },
+    {
+      "label": "📤 JSONエクスポート",
+      "type": "shell",
+      "command": "python",
+      "args": ["src/db_manager.py", "export", "wallpaper_export_${input:timestamp}.json"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONIOENCODING": "utf-8"
+        }
+      },
+      "problemMatcher": [],
+      "detail": "データベースをJSONファイルにエクスポート"
+    },
+    {
+      "label": "🧹 データベースクリーンアップ",
+      "type": "shell",
+      "command": "python",
+      "args": ["src/db_manager.py", "cleanup"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONIOENCODING": "utf-8"
+        }
+      },
+      "problemMatcher": [],
+      "detail": "存在しないファイルのレコードをデータベースから削除"
+    },
+    {
+      "label": "🔍 テーマ検索",
+      "type": "shell",
+      "command": "python",
+      "args": ["src/db_manager.py", "search-theme", "${input:themeName}"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONIOENCODING": "utf-8"
+        }
+      },
+      "problemMatcher": [],
+      "detail": "指定したテーマの壁紙を検索"
+    },
+    {
+      "label": "📦 必要なライブラリをインストール",
+      "type": "shell",
+      "command": "pip",
+      "args": ["install", "requests"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "detail": "プロジェクトに必要なPythonライブラリをインストール"
+    },
+    {
+      "label": "🧪 テスト実行",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "pytest", "tests/", "-v"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder}/src"
+        }
+      },
+      "problemMatcher": [],
+      "detail": "pytest を使用してテストを実行"
+    },
+    {
+      "label": "🎨 コードフォーマット",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "autopep8", "--in-place", "--aggressive", "--aggressive", "src/*.py"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "detail": "Python コードを自動フォーマット"
+    },
+    {
+      "label": "🔧 設定ファイル検証",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "json.tool", "ToolSettings.json"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "detail": "ToolSettings.json の構文をチェック"
+    },
+    {
+      "label": "🚀 Batファイル実行",
+      "type": "shell",
+      "command": "GetFreeWallpapers.bat",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "executable": "cmd.exe",
+          "args": ["/c"]
+        }
+      },
+      "problemMatcher": [],
+      "detail": "Windows バッチファイル経由で実行"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "themeName",
+      "description": "検索するテーマ名を入力してください",
+      "default": "自然",
+      "type": "promptString"
+    },
+    {
+      "id": "timestamp",
+      "description": "タイムスタンプ",
+      "default": "$(date +%Y%m%d_%H%M%S)",
+      "type": "command",
+      "command": "extension.commandvariable.dateTime",
+      "args": {
+        "format": "%Y%m%d_%H%M%S"
+      }
+    }
+  ]
+}

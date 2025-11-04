@@ -1,0 +1,271 @@
+{
+  // === Python設定 ===
+  // Pythonインタープリター関連
+  "python.defaultInterpreterPath": "./venv/Scripts/python.exe",
+  "python.terminal.activateEnvironment": true,
+  "python.terminal.activateEnvInCurrentTerminal": true,
+  
+  // Python実行設定
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.completeFunctionParens": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoSearchPaths": true,
+  "python.analysis.extraPaths": ["./src"],
+  
+  // コード品質とフォーマット
+  "python.formatting.provider": "autopep8",
+  "python.formatting.autopep8Args": [
+    "--max-line-length=100",
+    "--experimental"
+  ],
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.linting.flake8Args": [
+    "--max-line-length=100",
+    "--ignore=E501,W503"
+  ],
+  
+  // Pythonテスト設定
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": ["./tests"],
+  
+  // === JSON設定 ===
+  // JSONフォーマッティング
+  "json.format.enable": true,
+  "json.format.keepLines": false,
+  
+  // JSONスキーマ関連付け
+  "json.schemas": [
+    {
+      "fileMatch": ["**/ToolSettings.json"],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "object",
+            "properties": {
+              "count_per_theme": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 50,
+                "description": "各テーマで取得する壁紙枚数"
+              },
+              "resolution": {
+                "type": "string",
+                "enum": ["thumb", "small", "regular", "full", "raw"],
+                "description": "ダウンロードする画質設定"
+              },
+              "orientation": {
+                "type": "string",
+                "enum": ["landscape", "portrait", "squarish"],
+                "description": "画像の向き設定"
+              }
+            },
+            "required": ["count_per_theme", "resolution", "orientation"]
+          },
+          "themes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "テーマの表示名"
+                },
+                "query": {
+                  "type": "string",
+                  "description": "Unsplashで検索するキーワード"
+                },
+                "enabled": {
+                  "type": "boolean",
+                  "description": "このテーマを有効にするかどうか"
+                }
+              },
+              "required": ["name", "query", "enabled"]
+            }
+          }
+        },
+        "required": ["settings", "themes"]
+      }
+    }
+  ],
+  
+  // === エディタ全般設定 ===
+  // 文字コード
+  "files.encoding": "utf8",
+  "files.autoGuessEncoding": true,
+  
+  // 改行コード
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  
+  // インデント設定
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": true,
+  "editor.tabSize": 4,
+  
+  // ファイル別設定
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.rulers": [79, 100],
+    "editor.wordWrap": "off"
+  },
+  
+  "[json]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.suggest.insertMode": "replace"
+  },
+  
+  "[jsonc]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  
+  // === ファイル関連付け ===
+  "files.associations": {
+    "ToolSettings.json": "json",
+    "*.json": "json",
+    "wallpapers.db": "sqlite"
+  },
+  
+  // === 除外設定 ===
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/*.pyo": true,
+    "**/*.pyd": true,
+    "**/.pytest_cache": true,
+    "**/venv": true,
+    "**/env": true,
+    "**/.venv": true,
+    "**/.env": true,
+    "**/node_modules": true,
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true
+  },
+  
+  "search.exclude": {
+    "**/venv": true,
+    "**/env": true,
+    "**/.venv": true,
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/.git": true,
+    "**/wallpapers.db": true,
+    "**/Downloads/gfp": true
+  },
+  
+  // === インテリセンス・補完設定 ===
+  "editor.suggestSelection": "first",
+  "editor.acceptSuggestionOnCommitCharacter": false,
+  "editor.acceptSuggestionOnEnter": "on",
+  "editor.wordBasedSuggestions": "matchingDocuments",
+  
+  // === デバッグ設定 ===
+  "debug.allowBreakpointsEverywhere": true,
+  "debug.internalConsoleOptions": "openOnSessionStart",
+  "debug.terminal.clearBeforeReusing": true,
+  
+  // === ターミナル設定 ===
+  "terminal.integrated.defaultProfile.windows": "Command Prompt",
+  "terminal.integrated.profiles.windows": {
+    "Command Prompt": {
+      "path": "cmd.exe",
+      "args": ["/K", "chcp 65001 >nul"]
+    },
+    "PowerShell": {
+      "source": "PowerShell",
+      "args": ["-ExecutionPolicy", "Bypass"]
+    }
+  },
+  
+  // === Git設定 ===
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  
+  // === エクスプローラー設定 ===
+  "explorer.compactFolders": false,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.sortOrder": "type",
+  
+  // === ワークスペース固有の設定 ===
+  // プロジェクト固有のファイル監視
+  "files.watcherExclude": {
+    "**/Downloads/gfp/**": true,
+    "**/wallpapers.db*": true,
+    "**/venv/**": true
+  },
+  
+  // 自動保存
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  
+  // プロジェクト固有の言語設定
+  "emmet.includeLanguages": {
+    "python": "html"
+  },
+  
+  // === 拡張機能推奨設定 ===
+  "extensions.ignoreRecommendations": false,
+  
+  // SQLite関連
+  "[sql]": {
+    "editor.defaultFormatter": "ms-mssql.mssql"
+  },
+  
+  // Batch file設定
+  "[bat]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": false,
+    "files.encoding": "shiftjis"
+  },
+  
+  // Markdown設定
+  "[markdown]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.wordWrap": "on",
+    "editor.formatOnSave": true
+  },
+  
+  // === プロジェクト固有のスニペット有効化 ===
+  "editor.snippetSuggestions": "top",
+  "editor.tabCompletion": "on",
+  
+  // === Live Share設定 ===
+  "liveshare.featureSet": "insiders",
+  
+  // === その他のプロジェクト最適化 ===
+  "editor.minimap.enabled": false,
+  "editor.renderWhitespace": "selection",
+  "editor.renderControlCharacters": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.enablePreviewFromQuickOpen": false,
+  
+  // === カスタムタスク設定の準備 ===
+  "task.autoDetect": "on",
+  "task.showDecorations": true
+}

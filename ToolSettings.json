@@ -21,14 +21,19 @@
       "enabled": false
     },
     {
+      "name": "自然",
+      "query": "nature",
+      "enabled": true
+    },
+    {
       "name": "宇宙",
       "query": "galaxy",
-      "enabled": false
+      "enabled": true
     },
     {
       "name": "地球",
       "query": "earth",
-      "enabled": true
+      "enabled": false
     }
-   ]
+  ]
 }

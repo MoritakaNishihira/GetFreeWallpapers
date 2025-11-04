@@ -1,0 +1,216 @@
+{
+  // GetFreeWallpapers専用Pythonスニペット
+  
+  "Database Connection": {
+    "prefix": "db_conn",
+    "body": [
+      "try:",
+      "    conn = sqlite3.connect(self.db_path)",
+      "    cursor = conn.cursor()",
+      "    $0",
+      "    conn.commit()",
+      "    conn.close()",
+      "except Exception as e:",
+      "    print(f\"❌ データベースエラー: {e}\")"
+    ],
+    "description": "SQLite データベース接続のテンプレート"
+  },
+  
+  "API Request Template": {
+    "prefix": "api_req",
+    "body": [
+      "try:",
+      "    response = requests.get(url, headers=self.headers, params=params)",
+      "    response.raise_for_status()",
+      "    data = response.json()",
+      "    $0",
+      "except requests.exceptions.RequestException as e:",
+      "    print(f\"❌ API エラー: {e}\")",
+      "    return []"
+    ],
+    "description": "Unsplash API リクエストのテンプレート"
+  },
+  
+  "File Download Template": {
+    "prefix": "download",
+    "body": [
+      "try:",
+      "    print(f\"⬇️  ダウンロード中: {filename}\")",
+      "    img_response = requests.get(image_url)",
+      "    img_response.raise_for_status()",
+      "    ",
+      "    with open(filepath, 'wb') as f:",
+      "        f.write(img_response.content)",
+      "    ",
+      "    print(f\"✅ 完了: {filename}\")",
+      "    return str(filepath)",
+      "except Exception as e:",
+      "    print(f\"❌ ダウンロードエラー: {e}\")",
+      "    return None"
+    ],
+    "description": "ファイルダウンロードのテンプレート"
+  },
+  
+  "JSON Configuration Loader": {
+    "prefix": "load_config",
+    "body": [
+      "try:",
+      "    with open(config_file, 'r', encoding='utf-8') as f:",
+      "        config = json.load(f)",
+      "    print(f\"✅ 設定ファイル '{config_file}' を読み込みました\")",
+      "    return config",
+      "except FileNotFoundError:",
+      "    print(f\"❌ 設定ファイルが見つかりません: {config_file}\")",
+      "    return None",
+      "except json.JSONDecodeError as e:",
+      "    print(f\"❌ 設定ファイルの形式が正しくありません: {e}\")",
+      "    return None"
+    ],
+    "description": "JSON設定ファイル読み込みのテンプレート"
+  },
+  
+  "Progress Display": {
+    "prefix": "progress",
+    "body": [
+      "print(f\"🎨 テーマ: {theme_name} (検索: '{query}') - 目標: {target_count}枚\")",
+      "print(f\"📄 ページ{page}: 新規{downloaded}枚、スキップ{skipped}枚 (累計: 新規{total}/{target_count}枚)\")",
+      "$0"
+    ],
+    "description": "進捗表示のテンプレート"
+  },
+  
+  "Error Handler": {
+    "prefix": "error_handler",
+    "body": [
+      "try:",
+      "    $0",
+      "except Exception as e:",
+      "    print(f\"❌ エラー: {e}\")",
+      "    return None"
+    ],
+    "description": "基本的なエラーハンドリング"
+  },
+  
+  "Class Init Template": {
+    "prefix": "class_init",
+    "body": [
+      "def __init__(self, ${1:api_key}):",
+      "    \"\"\"",
+      "    ${2:クラスの説明}",
+      "    ",
+      "    Args:",
+      "        ${1:api_key} (${3:str}): ${4:引数の説明}",
+      "    \"\"\"",
+      "    self.${1:api_key} = ${1:api_key}",
+      "    self.base_url = \"https://api.unsplash.com\"",
+      "    self.headers = {\"Authorization\": f\"Client-ID {${1:api_key}}\"}",
+      "    $0"
+    ],
+    "description": "クラス初期化メソッドのテンプレート"
+  },
+  
+  "SQL Query Template": {
+    "prefix": "sql_query",
+    "body": [
+      "cursor.execute('''",
+      "    ${1:SELECT * FROM wallpapers}",
+      "    ${2:WHERE condition = ?}",
+      "    ${3:ORDER BY column}",
+      "''', (${4:params,}))",
+      "",
+      "results = cursor.fetchall()",
+      "$0"
+    ],
+    "description": "SQLクエリ実行のテンプレート"
+  },
+  
+  "Database Insert": {
+    "prefix": "db_insert",
+    "body": [
+      "cursor.execute('''",
+      "    INSERT OR REPLACE INTO ${1:table_name} (",
+      "        ${2:column1, column2, column3}",
+      "    ) VALUES (?, ?, ?)",
+      "''', (",
+      "    ${3:value1},",
+      "    ${4:value2},",
+      "    ${5:value3}",
+      "))",
+      "$0"
+    ],
+    "description": "データベースINSERT文のテンプレート"
+  },
+  
+  "File Path Template": {
+    "prefix": "filepath",
+    "body": [
+      "# ファイルパス設定",
+      "current_dir = Path(__file__).parent",
+      "project_root = current_dir.parent if current_dir.name == \"src\" else current_dir",
+      "self.${1:file_path} = project_root / \"${2:filename}\"",
+      "",
+      "# ディレクトリ作成",
+      "self.${1:file_path}.parent.mkdir(parents=True, exist_ok=True)",
+      "$0"
+    ],
+    "description": "ファイルパス設定のテンプレート"
+  },
+  
+  "Metadata Save": {
+    "prefix": "save_metadata",
+    "body": [
+      "metadata = {",
+      "    \"id\": photo[\"id\"],",
+      "    \"photographer\": photo[\"user\"][\"name\"],",
+      "    \"description\": photo.get(\"alt_description\"),",
+      "    \"download_date\": datetime.now().isoformat(),",
+      "    \"width\": photo.get(\"width\"),",
+      "    \"height\": photo.get(\"height\"),",
+      "    \"image_file\": os.path.basename(filepath),",
+      "    \"theme_name\": theme_name,",
+      "    $0",
+      "}"
+    ],
+    "description": "メタデータ作成のテンプレート"
+  },
+  
+  "Command Line Parser": {
+    "prefix": "cmd_parser",
+    "body": [
+      "if len(sys.argv) < 2:",
+      "    print(\"使用方法: python script.py [command] [options]\")",
+      "    print(\"コマンド:\")",
+      "    print(\"  ${1:command1}  - ${2:説明1}\")",
+      "    print(\"  ${3:command2}  - ${4:説明2}\")",
+      "    return",
+      "",
+      "command = sys.argv[1].lower()",
+      "",
+      "if command == \"${1:command1}\":",
+      "    $0",
+      "elif command == \"${3:command2}\":",
+      "    pass",
+      "else:",
+      "    print(f\"❌ 未知のコマンド: {command}\")"
+    ],
+    "description": "コマンドライン引数パーサーのテンプレート"
+  },
+  
+  "Statistics Display": {
+    "prefix": "show_stats",
+    "body": [
+      "print(\"\\n\" + \"=\"*50)",
+      "print(\"📊 ${1:統計タイトル}\")",
+      "print(\"=\"*50)",
+      "print(f\"🖼️  総${2:項目}数: {${3:count}:,}${4:単位}\")",
+      "",
+      "if ${5:condition}:",
+      "    print(f\"\\n🎨 ${6:カテゴリ}別統計:\")",
+      "    for ${7:item}, count in ${8:stats}:",
+      "        percentage = (count / ${3:count}) * 100 if ${3:count} > 0 else 0",
+      "        print(f\"   • {${7:item}}: {count}${4:単位} ({percentage:.1f}%)\")",
+      "$0"
+    ],
+    "description": "統計情報表示のテンプレート"
+  }
+}

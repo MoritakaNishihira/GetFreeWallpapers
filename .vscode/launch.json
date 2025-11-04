@@ -1,0 +1,133 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "🚀 GetFreeWallpapers - メイン実行",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/main.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src",
+        "PYTHONIOENCODING": "utf-8"
+      },
+      "args": [],
+      "stopOnEntry": false,
+      "justMyCode": true,
+      "presentation": {
+        "hidden": false,
+        "group": "main",
+        "order": 1
+      }
+    },
+    {
+      "name": "🗄️ データベース管理 - 統計表示",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/db_manager.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src",
+        "PYTHONIOENCODING": "utf-8"
+      },
+      "args": ["stats"],
+      "stopOnEntry": false,
+      "justMyCode": true,
+      "presentation": {
+        "hidden": false,
+        "group": "database",
+        "order": 2
+      }
+    },
+    {
+      "name": "📋 データベース管理 - 一覧表示",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/db_manager.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src",
+        "PYTHONIOENCODING": "utf-8"
+      },
+      "args": ["list", "20"],
+      "stopOnEntry": false,
+      "justMyCode": true,
+      "presentation": {
+        "hidden": false,
+        "group": "database",
+        "order": 3
+      }
+    },
+    {
+      "name": "🔍 カスタムデバッグ - 引数指定",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/db_manager.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src",
+        "PYTHONIOENCODING": "utf-8"
+      },
+      "args": ["${input:dbCommand}"],
+      "stopOnEntry": false,
+      "justMyCode": true,
+      "presentation": {
+        "hidden": false,
+        "group": "custom",
+        "order": 4
+      }
+    },
+    {
+      "name": "🧪 テスト実行",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        "-v",
+        "${workspaceFolder}/tests"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      },
+      "justMyCode": false,
+      "presentation": {
+        "hidden": false,
+        "group": "test",
+        "order": 5
+      }
+    },
+    {
+      "name": "🐛 現在のファイルをデバッグ",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "cwd": "${fileDirname}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src",
+        "PYTHONIOENCODING": "utf-8"
+      },
+      "stopOnEntry": false,
+      "justMyCode": true,
+      "presentation": {
+        "hidden": false,
+        "group": "debug",
+        "order": 6
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "dbCommand",
+      "description": "データベース管理コマンドを入力してください",
+      "default": "stats",
+      "type": "promptString"
+    }
+  ]
+}

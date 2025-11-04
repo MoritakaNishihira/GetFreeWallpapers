@@ -1,0 +1,227 @@
+{
+  // GetFreeWallpapers専用JSONスニペット
+  
+  "ToolSettings Template": {
+    "prefix": "toolsettings",
+    "body": [
+      "{",
+      "  \"settings\": {",
+      "    \"count_per_theme\": ${1:5},",
+      "    \"resolution\": \"${2|thumb,small,regular,full,raw|}\",",
+      "    \"orientation\": \"${3|landscape,portrait,squarish|}\"",
+      "  },",
+      "  \"themes\": [",
+      "    {",
+      "      \"name\": \"${4:テーマ名}\",",
+      "      \"query\": \"${5:検索キーワード}\",",
+      "      \"enabled\": ${6|true,false|}",
+      "    }$0",
+      "  ]",
+      "}"
+    ],
+    "description": "ToolSettings.json の基本テンプレート"
+  },
+  
+  "Theme Entry": {
+    "prefix": "theme",
+    "body": [
+      "{",
+      "  \"name\": \"${1:テーマ名}\",",
+      "  \"query\": \"${2:検索キーワード}\",",
+      "  \"enabled\": ${3|true,false|}",
+      "}$0"
+    ],
+    "description": "新しいテーマエントリを追加"
+  },
+  
+  "Popular Themes Set": {
+    "prefix": "popular_themes",
+    "body": [
+      "{",
+      "  \"name\": \"自然風景\",",
+      "  \"query\": \"nature landscape\",",
+      "  \"enabled\": true",
+      "},",
+      "{",
+      "  \"name\": \"都市建築\",",
+      "  \"query\": \"city architecture\",",
+      "  \"enabled\": true",
+      "},",
+      "{",
+      "  \"name\": \"ミニマルデザイン\",",
+      "  \"query\": \"minimal abstract\",",
+      "  \"enabled\": true",
+      "},",
+      "{",
+      "  \"name\": \"宇宙・天体\",",
+      "  \"query\": \"space galaxy stars\",",
+      "  \"enabled\": false",
+      "},",
+      "{",
+      "  \"name\": \"海・ビーチ\",",
+      "  \"query\": \"ocean beach waves\",",
+      "  \"enabled\": false",
+      "},",
+      "{",
+      "  \"name\": \"山・森林\",",
+      "  \"query\": \"mountain forest trees\",",
+      "  \"enabled\": false",
+      "},",
+      "{",
+      "  \"name\": \"抽象アート\",",
+      "  \"query\": \"abstract art colorful\",",
+      "  \"enabled\": false",
+      "},",
+      "{",
+      "  \"name\": \"動物\",",
+      "  \"query\": \"animals wildlife cute\",",
+      "  \"enabled\": false",
+      "}$0"
+    ],
+    "description": "人気テーマのセットを追加"
+  },
+  
+  "Japanese Nature Themes": {
+    "prefix": "jp_nature",
+    "body": [
+      "{",
+      "  \"name\": \"桜・春\",",
+      "  \"query\": \"cherry blossom sakura spring\",",
+      "  \"enabled\": false",
+      "},",
+      "{",
+      "  \"name\": \"紅葉・秋\",",
+      "  \"query\": \"autumn leaves japan maple\",",
+      "  \"enabled\": false",
+      "},",
+      "{",
+      "  \"name\": \"富士山\",",
+      "  \"query\": \"mount fuji japan\",",
+      "  \"enabled\": false",
+      "},",
+      "{",
+      "  \"name\": \"日本庭園\",",
+      "  \"query\": \"japanese garden zen\",",
+      "  \"enabled\": false",
+      "}$0"
+    ],
+    "description": "日本の自然テーマセット"
+  },
+  
+  "Tech Themes": {
+    "prefix": "tech_themes",
+    "body": [
+      "{",
+      "  \"name\": \"テクノロジー\",",
+      "  \"query\": \"technology digital modern\",",
+      "  \"enabled\": false",
+      "},",
+      "{",
+      "  \"name\": \"プログラミング\",",
+      "  \"query\": \"coding programming computer\",",
+      "  \"enabled\": false",
+      "},",
+      "{",
+      "  \"name\": \"AI・機械学習\",",
+      "  \"query\": \"artificial intelligence machine learning\",",
+      "  \"enabled\": false",
+      "},",
+      "{",
+      "  \"name\": \"データサイエンス\",",
+      "  \"query\": \"data science analytics\",",
+      "  \"enabled\": false",
+      "}$0"
+    ],
+    "description": "テクノロジー関連テーマセット"
+  },
+  
+  "Settings High Quality": {
+    "prefix": "settings_hq",
+    "body": [
+      "\"settings\": {",
+      "  \"count_per_theme\": 10,",
+      "  \"resolution\": \"full\",",
+      "  \"orientation\": \"landscape\"",
+      "}$0"
+    ],
+    "description": "高品質設定（フル解像度、横向き）"
+  },
+  
+  "Settings Regular": {
+    "prefix": "settings_reg",
+    "body": [
+      "\"settings\": {",
+      "  \"count_per_theme\": 5,",
+      "  \"resolution\": \"regular\",",
+      "  \"orientation\": \"landscape\"",
+      "}$0"
+    ],
+    "description": "通常設定（レギュラー解像度）"
+  },
+  
+  "Settings Mobile": {
+    "prefix": "settings_mobile",
+    "body": [
+      "\"settings\": {",
+      "  \"count_per_theme\": 3,",
+      "  \"resolution\": \"regular\",",
+      "  \"orientation\": \"portrait\"",
+      "}$0"
+    ],
+    "description": "モバイル向け設定（縦向き）"
+  },
+  
+  "Color Themes": {
+    "prefix": "color_themes",
+    "body": [
+      "{",
+      "  \"name\": \"青系・海\",",
+      "  \"query\": \"blue ocean water sky\",",
+      "  \"enabled\": false",
+      "},",
+      "{",
+      "  \"name\": \"暖色系\",",
+      "  \"query\": \"warm colors sunset orange\",",
+      "  \"enabled\": false",
+      "},",
+      "{",
+      "  \"name\": \"モノクロ\",",
+      "  \"query\": \"black white monochrome\",",
+      "  \"enabled\": false",
+      "},",
+      "{",
+      "  \"name\": \"パステルカラー\",",
+      "  \"query\": \"pastel colors soft\",",
+      "  \"enabled\": false",
+      "}$0"
+    ],
+    "description": "カラー別テーマセット"
+  },
+  
+  "Season Themes": {
+    "prefix": "seasons",
+    "body": [
+      "{",
+      "  \"name\": \"春\",",
+      "  \"query\": \"spring flowers bloom\",",
+      "  \"enabled\": false",
+      "},",
+      "{",
+      "  \"name\": \"夏\",",
+      "  \"query\": \"summer beach sunny\",",
+      "  \"enabled\": false",
+      "},",
+      "{",
+      "  \"name\": \"秋\",",
+      "  \"query\": \"autumn fall leaves\",",
+      "  \"enabled\": false",
+      "},",
+      "{",
+      "  \"name\": \"冬\",",
+      "  \"query\": \"winter snow cold\",",
+      "  \"enabled\": false",
+      "}$0"
+    ],
+    "description": "季節別テーマセット"
+  }
+}

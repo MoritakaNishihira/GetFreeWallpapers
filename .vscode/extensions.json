@@ -1,0 +1,46 @@
+{
+  "recommendations": [
+    // === Python関連 (必須) ===
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-python.autopep8",
+    "ms-python.flake8",
+    
+    // === JSON関連 (推奨) ===
+    "vscode.json-language-features",
+    
+    // === データベース関連 (推奨) ===
+    "alexcvzz.vscode-sqlite",
+    "qwtel.sqlite-viewer",
+    
+    // === Git関連 (推奨) ===
+    "mhutchie.git-graph",
+    "eamodio.gitlens",
+    
+    // === ユーティリティ (推奨) ===
+    "ms-vscode.vscode-json",
+    "streetsidesoftware.code-spell-checker",
+    "wayou.vscode-todo-highlight",
+    "oderwat.indent-rainbow",
+    "ms-vscode.notepadplusplus-keybindings",
+    
+    // === テーマ・アイコン (オプション) ===
+    "pkief.material-icon-theme",
+    "ms-vscode.vscode-theme-github-light",
+    
+    // === Markdown関連 (オプション) ===
+    "yzhang.markdown-all-in-one",
+    
+    // === ファイル管理 (オプション) ===
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    
+    // === バッチファイル関連 (オプション) ===
+    "ms-vscode.bat"
+  ],
+  "unwantedRecommendations": [
+    // 不要な拡張機能（競合回避）
+    "ms-python.pylint",
+    "ms-python.mypy-type-checker"
+  ]
+}
